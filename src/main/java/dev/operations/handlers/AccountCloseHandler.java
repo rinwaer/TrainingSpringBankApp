@@ -1,13 +1,16 @@
 package dev.operations.handlers;
 
-import dev.model.Account;
-import dev.model.User;
+import dev.account.Account;
+import dev.user.User;
 import dev.operations.OperationHandler;
-import dev.services.AccountService;
-import dev.services.UserService;
+import dev.operations.OperationsTypes;
+import dev.account.AccountService;
+import dev.user.UserService;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class AccountCloseHandler implements OperationHandler {
 
     private final Scanner sc;
@@ -30,5 +33,10 @@ public class AccountCloseHandler implements OperationHandler {
         User user = userService.findUser(account.getUserId())
                 .orElseThrow(() -> new IllegalStateException("User with id " + account.getUserId() + " not found"));
         user.getAccounts().remove(account);
+    }
+
+    @Override
+    public OperationsTypes getOperationType() {
+        return OperationsTypes.ACCOUNT_CLOSE;
     }
 }

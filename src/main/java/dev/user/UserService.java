@@ -1,10 +1,11 @@
-package dev.services;
+package dev.user;
 
-import dev.model.User;
+import dev.account.AccountService;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-
+@Service
 public class UserService {
 
     private final Map<Integer, User> users;

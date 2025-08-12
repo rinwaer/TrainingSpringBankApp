@@ -1,10 +1,13 @@
 package dev.operations.handlers;
 
 import dev.operations.OperationHandler;
-import dev.services.AccountService;
+import dev.operations.OperationsTypes;
+import dev.account.AccountService;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class AccountWithdrawHandler implements OperationHandler {
 
     private final Scanner sc;
@@ -23,5 +26,10 @@ public class AccountWithdrawHandler implements OperationHandler {
         System.out.println("Enter amount of money to withdraw");
         int amount = sc.nextInt();
         accountService.withdraw(id, amount);
+    }
+
+    @Override
+    public OperationsTypes getOperationType() {
+        return OperationsTypes.ACCOUNT_WITHDRAW;
     }
 }

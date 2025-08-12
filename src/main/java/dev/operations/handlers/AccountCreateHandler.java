@@ -1,12 +1,15 @@
 package dev.operations.handlers;
 
-import dev.model.User;
+import dev.user.User;
 import dev.operations.OperationHandler;
-import dev.services.AccountService;
-import dev.services.UserService;
+import dev.operations.OperationsTypes;
+import dev.account.AccountService;
+import dev.user.UserService;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class AccountCreateHandler implements OperationHandler {
 
     private final Scanner sc;
@@ -30,5 +33,10 @@ public class AccountCreateHandler implements OperationHandler {
         var account = accountService.createAccount(user);
         user.getAccounts().add(account);
         System.out.printf("Account created with Id: %s for user: %s%n", account.getId(), user.getLogin());
+    }
+
+    @Override
+    public OperationsTypes getOperationType() {
+        return OperationsTypes.ACCOUNT_CREATE;
     }
 }

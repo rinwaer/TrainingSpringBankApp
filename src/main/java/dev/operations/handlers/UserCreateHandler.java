@@ -1,11 +1,14 @@
 package dev.operations.handlers;
 
-import dev.model.User;
+import dev.user.User;
 import dev.operations.OperationHandler;
-import dev.services.UserService;
+import dev.operations.OperationsTypes;
+import dev.user.UserService;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class UserCreateHandler implements OperationHandler {
 
     private final Scanner sc;
@@ -24,5 +27,10 @@ public class UserCreateHandler implements OperationHandler {
         User user = userService.createUser(login);
         System.out.println("User created: " + user.toString());
 
+    }
+
+    @Override
+    public OperationsTypes getOperationType() {
+        return OperationsTypes.USER_CREATE;
     }
 }

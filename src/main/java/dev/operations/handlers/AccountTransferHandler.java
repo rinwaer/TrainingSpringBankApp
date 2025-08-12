@@ -1,10 +1,13 @@
 package dev.operations.handlers;
 
 import dev.operations.OperationHandler;
-import dev.services.AccountService;
+import dev.operations.OperationsTypes;
+import dev.account.AccountService;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class AccountTransferHandler implements OperationHandler {
 
     private final Scanner sc;
@@ -26,4 +29,10 @@ public class AccountTransferHandler implements OperationHandler {
         accountService.transfer(senderId, receiverId, amount);
         System.out.println("Transfer successful");
     }
+
+    @Override
+    public OperationsTypes getOperationType() {
+        return OperationsTypes.ACCOUNT_TRANSFER;
+    }
+
 }

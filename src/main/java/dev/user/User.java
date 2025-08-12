@@ -1,6 +1,8 @@
-package dev.model;
+package dev.user;
 
 
+
+import dev.account.Account;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package dev.services;
+package dev.account;
 
-import dev.model.Account;
-import dev.model.User;
+import dev.user.User;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,25 +9,24 @@ import java.util.Map;
 import java.util.Optional;
 
 
-
+@Service
 public class AccountService {
 
     private final Map<Integer, Account> accounts;
 
     private int id;
-    private final int defaultAccountBalance;
-    private final double defaultCommision;
 
-    public AccountService(int defaultAccountBalance, double defaultCommision) {
-        this.defaultAccountBalance = defaultAccountBalance;
-        this.defaultCommision = defaultCommision;
+    private final AccountProperties accountProperties;
+
+    public AccountService(AccountProperties accountProperties) {
+        this.accountProperties = accountProperties;
         this.accounts = new HashMap<>();
         this.id = 0;
     }
 
     public Account createAccount(User user) {
         id++;
-        Account account = new Account(id, user.getId(), defaultAccountBalance);
+        Account account = new Account(id, user.getId(), accountProperties.getDefaultAccountAmount());
         accounts.put(account.getId(), account);
         return account;
     }
@@ -87,7 +86,7 @@ public class AccountService {
         }
 
         int amountWithCommision = accountFrom.getUserId() != accountTo.getUserId()
-                ? (int)(startAmount - startAmount * defaultCommision)
+                ? (int)(startAmount - startAmount * accountProperties.getTransferCommission())
                 : startAmount;
         accountFrom.setMoneyAmount(accountFrom.getMoneyAmount() - startAmount);
         accountTo.setMoneyAmount(accountTo.getMoneyAmount() + amountWithCommision);
