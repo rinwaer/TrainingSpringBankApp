@@ -21,11 +21,11 @@ public class AccountTransferHandler implements OperationHandler {
     @Override
     public void processing() {
         System.out.println("Enter id of sender`s account");
-        int senderId = sc.nextInt();
+        var senderId = Long.parseLong(sc.nextLine());
         System.out.println("Enter id of receiver`s account");
-        int receiverId = sc.nextInt();
+        var receiverId = Long.parseLong(sc.nextLine());
         System.out.println("Enter amount of money to transfer");
-        int amount = sc.nextInt();
+        int amount = Integer.parseInt(sc.nextLine());
         accountService.transfer(senderId, receiverId, amount);
         System.out.println("Transfer successful");
     }

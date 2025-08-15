@@ -22,7 +22,7 @@ public class AccountDepositHandler implements OperationHandler {
     @Override
     public void processing() {
         System.out.println("Enter id of account to deposit");
-        int id = sc.nextInt();
+        var id = Long.parseLong(sc.nextLine());
         System.out.println("Enter amount of money to deposit");
         int amount = sc.nextInt();
         accountService.deposit(id, amount);

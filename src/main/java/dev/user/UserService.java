@@ -1,6 +1,11 @@
 package dev.user;
 
+import dev.account.Account;
 import dev.account.AccountService;
+import dev.helpers.TransactionHelper;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -8,48 +13,48 @@ import java.util.*;
 @Service
 public class UserService {
 
-    private final Map<Integer, User> users;
-
-    private int id;
-
-    private final Set<String> takenLogins;
-
     private final AccountService accountService;
+    private final SessionFactory sessionFactory;
+    private final TransactionHelper transactionHelper;
 
-    public UserService(AccountService accountService) {
-        this.id = id;
-        this.users = new HashMap<>();
-        this.takenLogins = new HashSet<>();
+    public UserService(AccountService accountService, SessionFactory sessionFactory, TransactionHelper transactionHelper) {
         this.accountService = accountService;
+        this.sessionFactory = sessionFactory;
+        this.transactionHelper = transactionHelper;
     }
 
     public User createUser(String login) {
+        return transactionHelper.executeInTransaction(() -> {
+            var session = sessionFactory.getCurrentSession();
+            var existedUser = session.createQuery("FROM User WHERE login = :login", User.class)
+                    .setParameter("login", login)
+                    .getSingleResultOrNull();
 
-        if(takenLogins.contains(login)) {
-            throw new IllegalArgumentException("User with login %s already exists"
-                    .formatted(login));
+            if(existedUser != null) {
+                throw new IllegalArgumentException("User already exists");
+            }
+
+            User user = new User(null, login, new ArrayList<>());
+            session.persist(user);
+
+            accountService.createAccount(user);
+            return user;
+        });
+    }
+
+    public Optional<User> findUser(Long id) {
+        try(Session session = sessionFactory.openSession()) {
+            var user = session.get(User.class, id);
+            return Optional.of(user);
         }
-        takenLogins.add(login);
-
-
-        id++;
-        var newUser = new User(id, login, new ArrayList<>());
-
-        var newAccount = accountService.createAccount(newUser);
-        newUser.getAccounts().add(newAccount);
-
-        users.put(newUser.getId(), newUser);
-        return newUser;
     }
 
-    public Optional<User> findUser(int id) {
-        return Optional.ofNullable(users.get(id));
+    public List<User> getUsers() {
+        try(Session session = sessionFactory.openSession()) {
+            return session.
+                    createQuery("SELECT u FROM User u LEFT JOIN FETCH u.accountList"
+                            , User.class)
+                    .list();
+        }
     }
-
-    public List<User> getAllUsers() {
-        return users.values().stream().toList();
-
-    }
-
-
 }
