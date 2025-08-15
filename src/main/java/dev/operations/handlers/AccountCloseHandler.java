@@ -28,11 +28,10 @@ public class AccountCloseHandler implements OperationHandler {
     @Override
     public void processing() {
         System.out.println("Enter id of account to close");
-        int id = sc.nextInt();
-        Account account = accountService.close(id);
-        User user = userService.findUser(account.getUserId())
-                .orElseThrow(() -> new IllegalStateException("User with id " + account.getUserId() + " not found"));
-        user.getAccounts().remove(account);
+        var id = Long.parseLong(sc.nextLine());
+        accountService.close(id);
+
+        System.out.println("Account %id successfully closed".formatted(id));
     }
 
     @Override

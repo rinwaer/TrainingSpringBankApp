@@ -6,6 +6,7 @@ import dev.operations.OperationsTypes;
 import dev.user.UserService;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 @Component

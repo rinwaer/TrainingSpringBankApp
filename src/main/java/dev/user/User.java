@@ -3,39 +3,60 @@ package dev.user;
 
 
 import dev.account.Account;
+import jakarta.persistence.*;
 
 import java.util.List;
 
-
+@Entity
+@Table(name = "users")
 public class User {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final String login;
+    @Column(name = "login", unique = true)
+    private String login;
 
-    private final List<Account> accounts;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Account> accountList;
 
-    public User(int id, String login, List<Account> accounts) {
+    public User(Long id, String login, List<Account> accountList) {
         this.id = id;
         this.login = login;
-        this.accounts = accounts;
+        this.accountList = accountList;
     }
 
-    public int getId() {
+    public User() {
+    }
+
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogin() {
         return login;
     }
 
-    public List<Account> getAccounts() {
-        return accounts;
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public List<Account> getAccountList() {
+        return accountList;
+    }
+
+    public void setAccountList(List<Account> accountList) {
+        this.accountList = accountList;
     }
 
     @Override
     public String toString() {
         return "User [id=" + id + ", login=" + login +
-                ", accounts=" + accounts + "]";
+                ", accounts=" + accountList + "]";
     }
 }

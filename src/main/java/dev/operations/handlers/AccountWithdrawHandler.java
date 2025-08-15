@@ -22,9 +22,11 @@ public class AccountWithdrawHandler implements OperationHandler {
     @Override
     public void processing() {
         System.out.println("Enter id of account to withdraw");
-        int id = sc.nextInt();
+        Long id = Long.parseLong(sc.nextLine());
+
         System.out.println("Enter amount of money to withdraw");
-        int amount = sc.nextInt();
+        var amount = Integer.parseInt(sc.nextLine());
+
         accountService.withdraw(id, amount);
     }
 

@@ -1,4 +1,4 @@
-package dev;
+package dev.console;
 
 import dev.operations.OperationHandler;
 import dev.operations.OperationsTypes;
@@ -30,7 +30,7 @@ public class OperationsConsoleListener {
     }
 
     public void listenInput() {
-        while(!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {
             var operationType = nextOperation();
             if (operationType == null) {
                 return;
@@ -48,7 +48,7 @@ public class OperationsConsoleListener {
         System.out.println("Choose operation:");
         printAllAvailableOperations();
         System.out.println();
-        while(!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {
             var nextOperation = sc.nextLine();
             try {
                 return OperationsTypes.valueOf(nextOperation);

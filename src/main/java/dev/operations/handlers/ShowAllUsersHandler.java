@@ -17,7 +17,7 @@ public class ShowAllUsersHandler implements OperationHandler {
     @Override
     public void processing() {
         System.out.println("List of all users: ");
-        userService.getAllUsers().forEach(System.out::println);
+        userService.getUsers().forEach(System.out::println);
     }
 
     @Override
